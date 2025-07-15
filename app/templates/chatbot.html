@@ -1,0 +1,364 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disetech Chatbot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in { animation: fadeIn 0.6s ease-out; }
+    .animate-pulse-hover { animation: pulse 2s infinite; }
+    .animate-slide-up { animation: slideUp 0.4s ease-out; }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #065f46 0%, #10b981 50%, #34d399 100%);
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .message-bubble {
+      position: relative;
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      max-width: 85%;
+      word-wrap: break-word;
+    }
+    
+    .user-message {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 8px;
+    }
+    
+    .bot-message {
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      color: #374151;
+      margin-right: auto;
+      border-bottom-left-radius: 8px;
+      border-left: 4px solid #10b981;
+    }
+    
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: typing 1.4s infinite;
+    }
+    
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-10px); }
+    }
+    
+    .floating-action {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 1rem;
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+      transition: all 0.3s ease;
+    }
+    
+    .floating-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
+    }
+    
+    .input-container {
+      position: relative;
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 1rem;
+    }
+    
+    .chat-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: 16px;
+      background: transparent;
+    }
+    
+    .send-button {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .send-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    
+    .chat-container {
+      height: 500px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+    
+    .chat-container::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .chat-container::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    
+    .chat-container::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 10px;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border-left: 4px solid #10b981;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen font-sans">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Header -->
+    <div class="text-center mb-8 animate-fade-in">
+      <div class="glass-effect rounded-3xl p-8 mb-6">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">
+          🌱 Disetech Farm Assistant
+        </h1>
+        <p class="text-gray-600 text-lg">Your AI-powered agricultural companion</p>
+      </div>
+    </div>
+    
+    <!-- Main Chat Interface -->
+    <div class="glass-effect rounded-3xl p-6 mb-6 animate-slide-up">
+      <!-- Chat Messages Container -->
+      <div class="chat-container" id="chatContainer">
+        <!-- Welcome Message -->
+        <div class="message-bubble bot-message animate-fade-in">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+              🤖
+            </div>
+            <div>
+              <p class="font-semibold text-green-700 mb-1">Disetech Assistant</p>
+              <p>Hello! I'm here to help you with all your farming questions. Ask me about crops, soil health, pest management, or anything agriculture-related!</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Display previous conversation if exists -->
+        {% if user_input %}
+        <div class="message-bubble user-message animate-slide-up">
+          <div class="flex items-start gap-3 justify-end">
+            <div>
+              <p class="font-semibold mb-1">You</p>
+              <p>{{ user_input }}</p>
+            </div>
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              👨‍🌾
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        
+        {% if response %}
+        <div class="message-bubble bot-message animate-slide-up">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+              🤖
+            </div>
+            <div>
+              <p class="font-semibold text-green-700 mb-1">Disetech Assistant</p>
+              <p class="whitespace-pre-line">{{ response }}</p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      
+      <!-- Input Form -->
+      <form method="POST" class="relative">
+        <div class="input-container">
+          <input 
+            type="text" 
+            name="message" 
+            placeholder="Ask me about crops, soil, pests, weather..." 
+            required
+            class="chat-input"
+            value=""
+            autocomplete="off"
+          >
+          <button type="submit" class="send-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2l-20 10 6 6 14-16z"/>
+              <path d="M8 12l14-10-6 6z"/>
+            </svg>
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="grid md:grid-cols-3 gap-4 mb-6 animate-fade-in">
+      <div class="feature-card">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+            🌾
+          </div>
+          <h3 class="font-semibold text-gray-800">Crop Advice</h3>
+        </div>
+        <p class="text-gray-600 text-sm">Get expert guidance on planting, growing, and harvesting your crops.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+            🌍
+          </div>
+          <h3 class="font-semibold text-gray-800">Soil Health</h3>
+        </div>
+        <p class="text-gray-600 text-sm">Learn about soil conditions, nutrients, and optimization techniques.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+            🐛
+          </div>
+          <h3 class="font-semibold text-gray-800">Pest Control</h3>
+        </div>
+        <p class="text-gray-600 text-sm">Identify and manage pests and diseases affecting your crops.</p>
+      </div>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="glass-effect rounded-2xl p-4 text-center animate-fade-in">
+      <a href="/profile" class="inline-flex items-center gap-2 text-green-700 hover:text-green-800 transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5"/>
+          <path d="M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Profile
+      </a>
+    </div>
+  </div>
+  
+  <!-- Floating Help Button -->
+  <div class="floating-action animate-pulse-hover">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M9,9a3,3 0 1,1 6,0c0,2 -3,3 -3,3"/>
+      <path d="M12,17h.01"/>
+    </svg>
+  </div>
+  
+  <script>
+    // Auto-scroll to bottom of chat
+    function scrollToBottom() {
+      const container = document.getElementById('chatContainer');
+      container.scrollTop = container.scrollHeight;
+    }
+    
+    // Scroll to bottom on page load
+    document.addEventListener('DOMContentLoaded', scrollToBottom);
+    
+    // Add typing animation when form is submitted
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const container = document.getElementById('chatContainer');
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message-bubble bot-message';
+      typingDiv.innerHTML = `
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+            🤖
+          </div>
+          <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(typingDiv);
+      scrollToBottom();
+    });
+    
+    // Floating action button click
+    document.querySelector('.floating-action').addEventListener('click', function() {
+      document.querySelector('.chat-input').focus();
+    });
+    
+    // Enter key support
+    document.querySelector('.chat-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.querySelector('form').submit();
+      }
+    });
+  </script>
+</body>
+</html>
+{% endblock %}

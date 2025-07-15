@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Disetech | Smart Farming{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-highlight {
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background-color: currentColor;
+      transition: width 0.3s ease-in-out;
+    }
+    .nav-highlight:hover::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <i class="fas fa-leaf text-green-600 text-2xl mr-2"></i>
+          <span class="text-xl font-semibold">Disetech</span>
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-6 text-sm font-medium">
+          <a href="{{ url_for('auth.profile') }}" class="nav-highlight hover:text-green-600 flex items-center gap-1">
+            <i class="fas fa-user-circle"></i> Profile
+          </a>
+          <a href="{{ url_for('weather.weather_forecast') }}" class="nav-highlight hover:text-green-600 flex items-center gap-1">
+            <i class="fas fa-cloud-sun"></i> Weather
+          </a>
+          <a href="{{ url_for('detect.detect_disease') }}" class="nav-highlight hover:text-green-600 flex items-center gap-1">
+            <i class="fas fa-bug"></i> Disease
+          </a>
+          <a href="{{ url_for('insights.show_insights') }}" class="nav-highlight hover:text-green-600 flex items-center gap-1">
+            <i class="fas fa-chart-bar"></i> Insights
+          </a>
+          <a href="{{ url_for('chatbot.chat') }}" class="nav-highlight hover:text-green-600 flex items-center gap-1">
+            <i class="fas fa-robot"></i> Advisor
+          </a>
+        </nav>
+
+        <!-- User Info -->
+        <div class="flex items-center gap-4">
+          <button class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-bell"></i>
+          </button>
+          <div class="relative group cursor-pointer">
+            <div class="flex items-center gap-2 bg-white rounded-full p-1 pr-2 shadow-md hover:shadow-lg transition">
+              <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User&background=4CAF50&color=fff" alt="User" />
+              <span class="text-sm text-gray-700">User</span>
+              <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+            </div>
+            <!-- Logout Modal -->
+            <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg p-2 hidden group-hover:block z-40">
+              <a href="{{ url_for('auth.login') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 rounded">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-20">
+    <div class="flex justify-around text-sm text-gray-600">
+      <a href="{{ url_for('auth.profile') }}" class="p-3 hover:text-green-600 text-center">
+        <i class="fas fa-user-circle block text-lg"></i>
+        <span>Profile</span>
+      </a>
+      <a href="{{ url_for('weather.weather_forecast') }}" class="p-3 hover:text-green-600 text-center">
+        <i class="fas fa-cloud-sun block text-lg"></i>
+        <span>Weather</span>
+      </a>
+      <a href="{{ url_for('detect.detect_disease') }}" class="p-3 hover:text-green-600 text-center">
+        <i class="fas fa-bug block text-lg"></i>
+        <span>Disease</span>
+      </a>
+      <a href="{{ url_for('chatbot.chat') }}" class="p-3 hover:text-green-600 text-center">
+        <i class="fas fa-robot block text-lg"></i>
+        <span>Advisor</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24 md:pb-8">
+    <div class="mb-6">
+      <h1 class="text-2xl font-semibold">{% block page_title %}{% endblock %}</h1>
+      <p class="text-gray-600">{% block page_subtitle %}{% endblock %}</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow p-6">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</body>
+</html>
