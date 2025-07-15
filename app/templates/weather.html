@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Forecast</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-green-50 min-h-screen font-sans p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden">
+      <!-- Header Section -->
+      <div class="bg-gradient-to-r from-blue-500 to-teal-600 p-6 text-white">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold">Weather Forecast</h1>
+            <div class="flex items-center mt-2">
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <p class="text-lg">{{ city }}</p>
+            </div>
+          </div>
+          <div class="hidden sm:block">
+            <i class="fas fa-cloud-sun text-4xl opacity-80"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Section -->
+      <div class="p-6">
+        {% if error %}
+          <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+            <p>{{ error }}</p>
+          </div>
+        {% else %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {% for forecast in forecasts %}
+              <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div class="p-4 text-center">
+                  <p class="font-bold text-gray-800">{{ forecast.date }}</p>
+                  <div class="my-3">
+                    <img src="{{ forecast.icon }}" alt="Weather icon" class="w-16 h-16 mx-auto">
+                  </div>
+                  <p class="text-sm text-gray-600 mb-2">{{ forecast.condition }}</p>
+                  <p class="text-2xl font-semibold text-gray-900">{{ forecast.avg_temp }}°C</p>
+                  <div class="flex justify-center space-x-4 mt-3 text-xs">
+                    <div class="text-red-500">
+                      <i class="fas fa-temperature-arrow-up"></i>
+                      <span>{{ forecast.max_temp }}°</span>
+                    </div>
+                    <div class="text-blue-500">
+                      <i class="fas fa-temperature-arrow-down"></i>
+                      <span>{{ forecast.min_temp }}°</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Additional Weather Info (placeholder) -->
+        <div class="mt-8 bg-blue-50/50 rounded-xl p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Weather Insights</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+              <div class="bg-blue-100 p-3 rounded-full mr-4">
+                <i class="fas fa-umbrella text-blue-600"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Precipitation</p>
+                <p class="font-semibold">20% chance</p>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+              <div class="bg-green-100 p-3 rounded-full mr-4">
+                <i class="fas fa-wind text-green-600"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Wind</p>
+                <p class="font-semibold">12 km/h</p>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+              <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                <i class="fas fa-sun text-yellow-600"></i>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">UV Index</p>
+                <p class="font-semibold">Moderate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Attribution -->
+    <div class="text-center text-sm text-gray-500 mt-6">
+      <p>Weather data provided by OpenWeatherMap</p>
+    </div>
+  </div>
+</body>
+</html>
+{% endblock %}
