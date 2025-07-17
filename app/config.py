@@ -8,4 +8,5 @@ class Config:
 
 
     WEATHER_API_KEY = 'c665a58919b94bc9b5893015251507' 
-    GROQ_API_KEY = "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"
+    
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Example safe usage
