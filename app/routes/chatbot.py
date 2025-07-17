@@ -1,13 +1,17 @@
 import os
-import openai
+from openai import OpenAI
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from app.config import Config
 
 chatbot = Blueprint('chatbot', __name__)
 
 # Use Groq’s OpenAI-compatible endpoint
-openai.api_key = Config.GROQ_API_KEY
-openai.api_base = "https://api.groq.com/openai/v1"
+
+client = OpenAI(
+    api_key = Config.GROQ_API_KEY,
+    base_url = "https://api.groq.com/openai/v1"
+)
+
 
 @chatbot.route('/chatbot', methods=['GET', 'POST'])
 def chat():
@@ -21,7 +25,7 @@ def chat():
         user_input = request.form['message']
 
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="llama3-70b-8192",  # You can use gemma or llama3
                 messages=[
                     {"role": "system", "content": "You are a smart agricultural assistant called DisetechBot. Provide accurate, helpful advice to farmers."},
@@ -29,7 +33,7 @@ def chat():
                 ],
                 temperature=0.7
             )
-            response_text = response['choices'][0]['message']['content']
+            response_text = response.choices[0].message.content
         except Exception as e:
             print("Chat error:", e)
             response_text = "There was a problem processing your message."
