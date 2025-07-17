@@ -1,0 +1,51 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment
+venv/
+.env/
+.venv/
+ENV/
+env/
+*.env
+
+# Flask instance/config
+instance/
+*.sqlite3
+*.db
+*.log
+*.bak
+config.py
+secrets.py
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Flask-Migrate files (optional)
+migrations/
+
+# Uploads and generated files
+/static/uploads/
+
+# Node / frontend dependencies (if applicable)
+node_modules/
+*.map
+*.lock
+
+# Coverage & testing
+.coverage
+coverage.xml
+*.cover
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Ignore compiled JS if using bundlers
+dist/
+build/
