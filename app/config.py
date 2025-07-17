@@ -8,4 +8,4 @@ class Config:
 
 
     WEATHER_API_KEY = 'c665a58919b94bc9b5893015251507' 
-    GROQ_API_KEY = "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"
+    GROQ_API_KEY = "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"
