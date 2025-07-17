@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Request
+import os
 import httpx
 
 app = FastAPI()
 
 GROQ_API_URL = "https://api.groq.com/v1/chat/completions"
-GROQ_API_KEY = "your-groq-api-key"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 @app.post("/chat")
 async def chat_with_bot(request: Request):

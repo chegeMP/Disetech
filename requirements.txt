@@ -6,3 +6,5 @@ uvicorn==0.22.0
 httpx==0.27.0
 python-dotenv==1.0.1
 httpx==0.27.0
+openai==1.96.1
+requests==2.32.4

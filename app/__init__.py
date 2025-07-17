@@ -1,3 +1,9 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask
 from app.routes.landing import landing
 from app.routes.auth import auth
