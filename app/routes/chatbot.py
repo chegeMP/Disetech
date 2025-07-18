@@ -6,7 +6,7 @@ from app.config import Config
 chatbot = Blueprint('chatbot', __name__)
 
 # Use Groq’s OpenAI-compatible endpoint
-openai.api_key = Config.GROQ_API_KEY
+openai.api_key = os.getenv('GROQ_API_KEY')
 openai.api_base = "https://api.groq.com/openai/v1"
 
 @chatbot.route('/chatbot', methods=['GET', 'POST'])
