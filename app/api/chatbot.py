@@ -17,7 +17,7 @@ async def chat_with_bot(request: Request):
             GROQ_API_URL,
             headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
             json={
-                "model": "mixtral-8x7b-32768",
+                "model": "whisper Large",
                 "messages": [{"role": "user", "content": user_input}]
             }
         )
