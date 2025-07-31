@@ -32,5 +32,5 @@ def create_app():
     app.register_blueprint(blog)
     app.register_blueprint(advisor)
     app.register_blueprint(chatbot)
-
+    
     return app
