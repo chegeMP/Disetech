@@ -1,13 +1,9 @@
-# Environment variables
+.venv/
 .env
-.env.local
-.env.production
-
-# IDE files
-.vscode/
-*.pyc
 __pycache__/
+*.py[cod]
 
 # Virtual environment
 venv/
-env/
+env/*.pyc
+*.pyc

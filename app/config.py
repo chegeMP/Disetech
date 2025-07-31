@@ -7,3 +7,7 @@ class Config:
     
     WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+    AT_USERNAME = os.getenv("AT_USERNAME")
+    AT_API_KEY = os.getenv("AT_API_KEY")
+    AT_USSD_CODE = os.getenv("AT_USSD_CODE")
