@@ -16,6 +16,8 @@ from app.routes.soil import soil
 from app.routes.blog import blog
 from app.routes.advisor import advisor
 from app.routes.chatbot import chatbot
+from app.routes.ussd import ussd
+
 
 def create_app():
     app = Flask(__name__)
@@ -32,5 +34,6 @@ def create_app():
     app.register_blueprint(blog)
     app.register_blueprint(advisor)
     app.register_blueprint(chatbot)
+    app.register_blueprint(ussd)
     
     return app
